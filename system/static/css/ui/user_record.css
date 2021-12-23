@@ -1,0 +1,52 @@
+.left_menu {
+    width: 300px;
+    top: 25%;
+    left: 10px;
+    bottom: 20px;
+    position: absolute;
+    border-image: linear-gradient(to right, #000718, #23b7cb) 1 10;
+}
+
+.left_title {
+    height: 50px;
+    width: 100%;
+    float: left;
+    font-size: 18px;
+    background: #c1c7d0;
+    text-indent: 40px;
+    padding-top: 16px;
+
+}
+
+.left_menu_list ul {
+    list-style-type: none;
+}
+
+.left_menu_list li h3 {
+    width: 100%;
+    font-size: 18px;
+    float: left;
+    color: rgba(51, 62, 82, 0.73);
+
+}
+
+.left_menu_list li ul a {
+    text-decoration: none;
+    width: 100%;
+    color: #2c60ed;
+    font-size: 18px;
+}
+
+.content {
+    bottom: 20px;
+    position: absolute;
+    left: 280px;
+    top: 22%;
+    right: 10px;
+    padding-left: 60px;
+    z-index: 1;
+}
+
+.left_menu_list .choice a {
+    color: #333333;
+}

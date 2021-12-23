@@ -1,0 +1,67 @@
+{% extends "dn_base.html" %}
+
+{% block title %}销售管理{% endblock %}
+
+{% block head %}
+<meta name="viewport" content="width=device-width"/>
+<script src="../../static/scripts/saleman/saleman.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="panel-body">
+    <h1>{{ self.title() }}</h1>
+    <div id="toolbar" class="btn-group">
+        <button id="addButton" class="btn btn-default" data-toggle="modal" data-target="#add-dialog">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp新增
+        </button>
+        <button id="btn_delete" type="button" class="btn btn-default" onclick="deleteSaleman()">
+            <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>&nbsp删除
+        </button>
+    </div>
+    <table id="tb_saleman"></table>
+</div>
+<div class="modal fade" id="add-dialog" tabindex="-1" role="dialog" aria-labelledby="addModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="addModalLabel">添加销售人员</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" class="form-horizontal">
+                            <div class="form-group">
+                                <label for="saleman_name" class="col-sm-2 control-label">人员名称</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control required" id="saleman_name"
+                                           name="saleman_name"
+                                           value=""
+                                           placeholder="人员名称">
+                                </div>
+
+                            </div>
+                             <div class="form-group">
+                                <label for="saleman_email" class="col-sm-2 control-label">人员邮箱</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control required" id="saleman_email"
+                                           name="saleman_email"
+                                           value=""
+                                           placeholder="人员邮箱">
+                                </div>
+
+                            </div>
+                        </form>
+                        <div class="modal-footer">
+                            <span style="color:#FF0000; margin-left: 120px; font-size: 16px; float: left;"
+                                  id="add_msg"></span>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-primary" id="save-saleman-btn" onclick="addSaleman()">
+                                保存
+                            </button>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+    </div>
+
+{% endblock %}

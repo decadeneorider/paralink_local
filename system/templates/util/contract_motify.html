@@ -1,0 +1,148 @@
+{% extends "dn_base.html" %}
+
+{% block title %}修改合同{% endblock %}
+
+{% block head %}
+<meta name="viewport" content="width=device-width"/>
+<script src="../../static/scripts/contract/contract.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.tn-single').select2();
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="panel-body">
+    <h1>{{ self.title() }}</h1>
+    <br><br>
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label for="contract_id" class="col-sm-2 control-label">合同编号</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control required" id="contract_id" name="contract_id" maxlength="50"
+                       placeholder="请输入合同编号" required data-msg-required="不能为空" value={{data.contract_id}} disabled>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="customer" class="col-sm-2 control-label">客户</label>
+            <div class="col-sm-8">
+                <select class="form-control tn-single" id="customer" name="customer">
+                    {% for i,a in customer %}
+                        {% if a== data.customer%}
+                        <option value="{{ i }}" selected>{{ a }}</option>
+                        {% else %}
+                        <option value="{{ i }}" >{{ a }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="vender" class="col-sm-2 control-label">原厂</label>
+            <div class="col-sm-8">
+                <select class="form-control tn-single" id="vender" name="vender">
+                    {% for i,a in vender %}
+                        {% if a== data.vender%}
+                        <option value="{{ i }}" selected>{{ a }}</option>
+                        {% else %}
+                        <option value="{{ i }}" >{{ a }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="saleman" class="col-sm-2 control-label">销售人员</label>
+            <div class="col-sm-8">
+                <select class="form-control tn-single" id="saleman" name="saleman">
+                    {% for i,a in saleman %}
+                        {% if a== data.saleman%}
+                        <option value="{{ i }}" selected>{{ a }}</option>
+                        {% else %}
+                        <option value="{{ i }}" >{{ a }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label for="receipt_date" class="col-sm-2 control-label">接单日期</label>
+            <div class="col-sm-8">
+                <input type="date" class="form-control required" id="receipt_date" name="receipt_date" maxlength="50" value={{data.receipt_date}}>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="order_date" class="col-sm-2 control-label">下单日期</label>
+            <div class="col-sm-8">
+                <input type="date" class="form-control required" id="order_date" name="order_date" maxlength="50" value={{data.order_date}}>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="shipmemt_date" class="col-sm-2 control-label">原厂发货日期</label>
+            <div class="col-sm-8">
+                <input type="date" class="form-control required" id="shipmemt_date" name="shipmemt_date" maxlength="50" value={{data.shipmemt_date}}>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="arrival_date" class="col-sm-2 control-label">货到客户日期</label>
+            <div class="col-sm-8">
+                <input type="date" class="form-control required" id="arrival_date" name="arrival_date" maxlength="50" value={{data.arrival_date}}>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="acceptment_date" class="col-sm-2 control-label">验收日期</label>
+            <div class="col-sm-8">
+                <input type="date" class="form-control required" id="acceptment_date" name="acceptment_date" maxlength="50" value={{data.acceptment_date}}>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="due_date" class="col-sm-2 control-label">维保到期</label>
+            <div class="col-sm-8">
+                <input type="date" class="form-control required" id="due_date" name="due_date" maxlength="50" value={{data.due_date}}>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="remind_need" class="col-sm-2 control-label">是否维保到期提醒</label>
+            <div class="col-sm-8">
+                <select class="form-control" id="remind_need" name="remind_need">
+                    {%  if data.remind_need == "是" %}
+                        <option value="0"  selected>需要到期提醒</option>
+                        <option value="1">不需要到期提醒</option>
+                    {% else %}
+                        <option value="0">需要到期提醒</option>
+                        <option value="1" selected>不需要到期提醒</option>
+                    {% endif%}
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="configure" class="col-sm-2 control-label">配置</label>
+            <div class="col-sm-8">
+                <textarea name="result" id="configure"  class="form-control required"
+                          style="resize: none; height: 188px;" >{{data.configure|safe}}</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="remark" class="col-sm-2 control-label">备注</label>
+            <div class="col-sm-8">
+                <textarea name="result" id="remark"  class="form-control required"
+                          style="resize: none; height: 188px;">{{data.remark}}</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-8">
+                <button id="submitButton" class="btn btn-default" onclick="co_modify()">保存</button>
+                <span style="color:#FF0000; margin-left: 120px; font-size: 16px;" id="msg"></span>
+            </div>
+        </div>
+        <style>
+            .error {
+                color: red;
+            }
+        </style>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "dn_base.html" %}
+
+{% block title %}邮件记录{% endblock %}
+
+{% block head %}
+<meta name="viewport" content="width=device-width"/>
+<script src="../../static/scripts/email_company/email_record.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="panel-body">
+    <h1>{{ self.title() }}</h1>
+    <br><br>
+        <!--        日志内容-->
+        <div class="content">
+            <table id="tb_records"></table>
+        </div>
+</div>
+{% endblock %}

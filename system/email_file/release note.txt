@@ -1,0 +1,9 @@
+version: 2.0.1.8 
+data :2021-12-08
+
+Bug Fixed：
+1. AGB-56： 配置2cc-nsa，scell_list没有添加到配置文件中
+2. AGB-53： 创建milenage 加密算法下的 op 选项
+
+New Features：
+1. 增加离线配置生成功能

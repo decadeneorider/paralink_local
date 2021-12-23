@@ -1,0 +1,10 @@
+.res_content {
+    margin: 0;
+    width: 565px;
+    height: 255px;
+    resize: none;
+}
+
+.panel-body #op_input_server {
+    padding-left: 12px;
+}

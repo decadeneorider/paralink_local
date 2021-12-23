@@ -1,0 +1,272 @@
+.panel-body hr {
+    size: 3px;
+}
+
+.form-horizontal h5 {
+    padding-left: 150px;
+}
+
+.nacos_configure .nacos {
+    margin-bottom: 50px;
+}
+
+.panel-body .bottom_save {
+    padding-left: 8%;
+}
+
+.panel-body .bottom_save a {
+    padding-left: 25px;
+}
+
+.add_data {
+    margin-right: 10px;
+}
+
+.sql_info {
+    float: right;
+    margin-left: 20px;
+}
+
+/*sql文件执行*/
+
+
+.panel-body .sql_all {
+    height: 618px;
+}
+
+.panel-body .sql_all .sql_info {
+    width: 24%;
+}
+
+#scripts {
+    width: 72%;
+}
+
+#tables {
+    width: 100%;
+    margin: 0;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border-top: 1px solid #d0cccc;
+    border-left: 1px solid #d0cccc;
+}
+
+#res_tables {
+    width: 72%;
+    margin: 0;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border-top: 1px solid #d0cccc;
+    border-left: 1px solid #d0cccc;
+}
+
+#look_tables {
+    width: 100%;
+    height: 300px;
+    margin: 0;
+    overflow: hidden;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border-top: 1px solid #d0cccc;
+    border-left: 1px solid #d0cccc;
+}
+
+#tables tr {
+    height: 38px;
+}
+
+#res_tables tr {
+    height: 38px;
+}
+
+#look_tables tr {
+    height: 38px;
+}
+
+#res_tables .op_id {
+    width: 80px;
+}
+
+#tables .version {
+    width: 120px;
+}
+
+#res_tables .version {
+    width: 120px;
+}
+
+#tables .script_name {
+    width: 520px;
+}
+
+#res_tables .script_name {
+    width: 520px;
+}
+
+#tables .op_result {
+    width: 200px;
+}
+
+#res_tables .op_result {
+    width: 200px;
+}
+
+#tables .create_time {
+    width: 200px;
+}
+
+#res_tables .create_time {
+    width: 200px;
+}
+
+#tables .create_user {
+    width: 120px;
+}
+
+#res_tables .create_user {
+    width: 120px;
+}
+
+#tables .operation {
+    width: 120px;
+}
+
+#res_tables .operation {
+    width: 120px;
+}
+
+#look_tables .file_name {
+    width: 120px;
+}
+
+#look_tables .file_res {
+    width: 30px;
+}
+
+#tables tr th {
+    text-align: center;
+    border-bottom: 1px solid #d0cccc;
+    border-right: 1px solid #d0cccc;
+}
+
+#res_tables tr th {
+    text-align: center;
+    border-bottom: 1px solid #d0cccc;
+    border-right: 1px solid #d0cccc;
+}
+
+#look_tables tr th {
+    text-align: center;
+    border-bottom: 1px solid #d0cccc;
+    border-right: 1px solid #d0cccc;
+}
+
+#tables tr td {
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* for IE */
+    border-bottom: 1px solid #d0cccc;
+    border-right: 1px solid #d0cccc;
+}
+
+#res_tables tr td {
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* for IE */
+    border-bottom: 1px solid #d0cccc;
+    border-right: 1px solid #d0cccc;
+}
+
+#look_tables tr td {
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* for IE */
+    border-bottom: 1px solid #d0cccc;
+    border-right: 1px solid #d0cccc;
+}
+
+.pagination-centered {
+    padding-top: 30px;
+    text-align: center;
+}
+
+.modal-body .sql_content_detail {
+    margin: 0;
+    width: 560px;
+    height: 270px;
+    resize: none;
+}
+
+.add_content {
+    margin: 0;
+    width: 468px;
+    height: 255px;
+    resize: none;
+}
+
+.sql_info .op_maintenance {
+    padding-left: 0;
+}
+
+.sql_info .op_maintenance #submitButton {
+    margin-right: 10px;
+}
+
+.sql_file_title {
+    width: 560px;
+    height: 20px;
+    margin-left: 15px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.sql_res_customer {
+    width: 560px;
+    height: 20px;
+    padding-left: 15px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.sql_info .separator {
+    margin-top: 3px;
+    margin-right: -8px;
+    margin-left: -25px;
+}
+
+.sql_info .connect {
+    margin-left: 20px;
+}
+
+#manage_file_content {
+    margin: 0;
+    width: 565px;
+    height: 280px;
+}
+
+#res-dialog .model_res_content {
+    height: 500px;
+    overflow: auto;
+}
+
+#mask {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    color: red;
+    z-index: 100;
+}
+
+#add_file_name_error {
+    color: red;
+    text-align: center;
+}
+
+.panel-body .sql_res {
+    padding-top: 20px;
+}

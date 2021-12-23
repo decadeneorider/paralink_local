@@ -1,0 +1,108 @@
+{% extends "dn_base.html" %}
+
+{% block title %}合同详情{% endblock %}
+
+{% block head %}
+<meta name="viewport" content="width=device-width"/>
+<script src="../../static/scripts/contract/contract.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.tn-single').select2();
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="panel-body">
+    <h1>{{ self.title() }}</h1>
+    <br><br>
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label for="contract_id" class="col-sm-2 control-label">合同编号</label>
+            <div class="col-sm-8">
+                <p id ="contract_id" >{{data.contract_id}}</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="customer" class="col-sm-2 control-label">客户</label>
+            <div class="col-sm-8">
+                <p id ="customer" >{{data.customer}}</p>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="vender" class="col-sm-2 control-label">原厂</label>
+            <div class="col-sm-8">
+                <p id ="vender" >{{data.vender}}</p>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="saleman" class="col-sm-2 control-label">销售人员</label>
+            <div class="col-sm-8">
+                <p id ="saleman" >{{data.saleman}}</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="configure" class="col-sm-2 control-label">配置</label>
+            <div class="col-sm-8">
+                <p id ="configure" >{{data.configure|safe}}</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="receipt_date" class="col-sm-2 control-label">接单日期</label>
+            <div class="col-sm-8">
+                <p id ="receipt_date" >{{data.receipt_date}}</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="order_date" class="col-sm-2 control-label">下单日期</label>
+            <div class="col-sm-8">
+                <p id ="order_date" >{{data.order_date}}</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="shipmemt_date" class="col-sm-2 control-label">原厂发货日期</label>
+            <div class="col-sm-8">
+                <p id ="shipmemt_date" >{{data.shipmemt_date}}</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="arrival_date" class="col-sm-2 control-label">货到客户日期</label>
+            <div class="col-sm-8">
+                <p id ="arrival_date" >{{data.arrival_date}}</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="acceptment_date" class="col-sm-2 control-label">验收日期</label>
+            <div class="col-sm-8">
+                <p id ="acceptment_date" >{{data.acceptment_date}}</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="due_date" class="col-sm-2 control-label">维保到期</label>
+            <div class="col-sm-8">
+                <p id ="due_date" >{{data.due_date}}</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="remind_need" class="col-sm-2 control-label">是否维保到期提醒</label>
+            <div class="col-sm-8">
+                <p id ="remind_need" >{{data.remind_need}}</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="remark" class="col-sm-2 control-label">备注</label>
+            <div class="col-sm-8">
+                <p id ="remark" >{{data.remark}}</p>
+            </div>
+        </div>
+        <style>
+            .error {
+                color: red;
+            }
+        </style>
+    </div>
+</div>
+{% endblock %}

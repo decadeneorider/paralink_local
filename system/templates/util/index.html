@@ -1,0 +1,22 @@
+{% extends "dn_base.html" %}
+
+{% block title %}首页{% endblock %}
+{% block head %}
+    <meta name="viewport" content="width=device-width"/>
+{% endblock head %}
+
+{% block content %}
+    <div class="container">
+        <div class="page-header">
+            <h1>{{ message }}</h1>
+        </div>
+        <div class="title" style="font-size: 18px; text-align: center"><strong></strong></div>
+        <br/>
+        <p style="text-indent: 2em;">登陆成功后跳转到首页</p>
+        <br/>
+        1. 首页
+        <p style="text-indent: 2em;">展示使用平台的一些功能</p>
+        <p style="text-indent: 2em;">可实现编辑每次更新的日志信息(点击保存)</p>
+        <br/>
+    </div>
+{% endblock %}

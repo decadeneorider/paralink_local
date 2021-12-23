@@ -1,0 +1,11 @@
+.user_info span {
+    margin-right: 45px;
+}
+
+.cargo_info .cargo {
+    margin-bottom: 5px;
+}
+
+.cargo_info .tables tr {
+    height: 35px;
+}
