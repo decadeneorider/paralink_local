@@ -1,5 +1,5 @@
 from flask import render_template, jsonify, request, session, Blueprint, g
-from system.db.contract_db import Tipsdb
+from system.db.contract_db import Tipsdb,Contractdb
 from system.views import user
 
 
@@ -31,3 +31,10 @@ def tips_record_display_json():
         offset = info.get('offset', 0)  # 分片数，(页码-1)*limit，它表示一段数据的起点
     return jsonify({'total': len(tips_infors), 'rows': tips_infors[int(offset):(int(offset) + int(limit))]})
 
+
+@mod.route('/tips_update',methods=['POST', 'GET'])
+@user.authorize
+def tips_update():
+    contract_id = request.values.get("contract_id")
+    Contractdb().remind_need_update(contract_id)
+    return jsonify({"code": 200,})

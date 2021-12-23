@@ -64,8 +64,8 @@ def tips_email():
 
 
 def saleman_month_report():
-     # saleman_res = test_user_manager().get_user_position_email("销售人员")
-     saleman_res = [(0,"Rondon.yuan","1808863016@qq.com")]
+     saleman_res = test_user_manager().get_user_position_email("销售人员")
+     # saleman_res = [(0,"Rondon.yuan","1808863016@qq.com")]
      for row in saleman_res:
         file_name = ExeclOperation().made_month_report(row[1])
         basepath = os.path.abspath('.')

@@ -66,3 +66,52 @@ var TableInit = function () {
     };
     return oTableInit;
 };
+
+
+
+function deleteCustomer() {
+    "use strict";
+
+    cocoMessage.config({
+        duration: 10000,
+    });
+
+    var rows = $('#tb_tips_contract').bootstrapTable('getSelections');
+    if (rows) {
+        var row = rows[1];
+        var contract_id ;
+        try{
+            contract_id = row.id;
+        }
+        catch(e)
+        {
+            contract_id = 0;
+        }
+    }
+    $.ajax(
+        {
+            url: "/tips_update",
+            data: {"id": contract_id},
+            type: "post",
+            dataType: 'json',
+            beforeSend: function () {
+                $("#tip").html("<span style='color:blue'>正在处理...</span>");
+            },
+            success: function (data) {
+                if (data.code === 200) {
+                    cocoMessage.info("修改成功！", 1000);
+                    setTimeout(function () {
+                        window.location.href = ('/tips_record_display');
+                    }, 1500);
+                } else {
+                   cocoMessage.error(data['msg'], 1000);
+                }
+            },
+            error: function () {
+                alert('请求出错');
+            },
+            complete: function () {
+                $("#btn_delete").removeAttr("disabled");
+            }
+        });
+}
