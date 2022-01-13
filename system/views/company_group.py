@@ -5,6 +5,9 @@ from system.function.email_send import Email
 import datetime
 import os
 from system.db. user_db import test_user_manager
+import time
+from system.function.yaml_handle import ReadHandle
+
 
 
 
@@ -17,11 +20,17 @@ def allowed_file(filename):
 mod = Blueprint('company_group', __name__, template_folder='templates')
 
 
+configure_file = os.path.abspath('.')
+
+configure_data = ReadHandle(f'{configure_file}/system/configure/authority_configure.yaml').yaml_files_read()
+
 @mod.route('/email_company_edit',methods=['POST', 'GET'])
 @user.authorize
 def group_display():
     group_infor =Emaildb().get_all_group()
-    return render_template('util/email_company_edit.html',group = group_infor)
+    user_list = session.get('user', None)
+    user_position = user_list[0]['position']
+    return render_template('util/email_company_edit.html',group = group_infor,configure_data = configure_data,user_position=user_position)
 
 
 @mod.route('/group_company.json',methods=['POST', 'GET'])
@@ -45,23 +54,6 @@ def group_change_company():
     return data
 
 
-@mod.route('/group_add_company.json',methods=['POST', 'GET'])
-@user.authorize
-def group_add_company():
-    group_id = request.values.get("company_group_id")
-    company_name = request.values.get("company_name")
-    company_email = request.values.get("company_email")
-    company_saleman = request.values.get("company_saleman")
-    company_department = request.values.get("company_department")
-    if company_name ==None or company_name =="" :
-        return jsonify({"code": 500, "msg": "请填写客户名称"})
-    elif company_email==None or company_email=="":
-        return jsonify({"code": 500, "msg": "请填写客户邮箱"})
-    elif company_department == None or company_department == "":
-        return jsonify({"code": 500, "msg": "请填写客户部门"})
-    else :
-        Emaildb().add_group_company(company_name,company_email,group_id,company_saleman,company_department)
-        return jsonify({"code": 200, "msg": "添加成功"})
 
 
 @mod.route('/group_del_company.json',methods=['POST', 'GET'])
@@ -79,17 +71,24 @@ def group_del_company():
 @mod.route('/send_email',methods=['POST', 'GET'])
 @user.authorize
 def send_email():
-    group_infor =Emaildb().get_all_group()
-    users = test_user_manager().get_all_user_id()
-    variable =[
+    user_list = session.get('user', None)
+    user_position = user_list[0]['position']
+    if user_position in configure_data['mail_send']:
+        group_infor =Emaildb().get_all_group()
+        users = test_user_manager().get_all_user_id()
+        variable =[
 
-    ]
-    for row in users:
-        user_infor = {}
-        user_infor["label"] = row[1]
-        user_infor["value"] = row[0]
-        variable.append(user_infor)
-    return render_template('util/send_email.html',group = group_infor,variable=variable)
+        ]
+        for row in users:
+            user_infor = {}
+            user_infor["label"] = row[0]
+            user_infor["value"] = row[1]
+            variable.append(user_infor)
+
+        return render_template('util/send_email.html',group = group_infor,variable=variable)
+    else:
+        return render_template('util/405.html')
+
 
 
 
@@ -110,6 +109,7 @@ def upload_email_file():
 @mod.route('/send_email.json',methods=['POST', 'GET'])
 @user.authorize
 def send_email_json():
+    time.sleep(3)
     user_list = session.get('user', None)
     user_name = user_list[0]['username']
     group_id = request.values.get("company_group_id")
@@ -117,6 +117,8 @@ def send_email_json():
     sql_message = request.values.get("sql_message")
     file_name = request.values.get("file_name")
     email_title = request.values.get("email_title")
+    CC_email =  request.values.get("CC_email")
+    print(type(CC_email))
     company_infor = Emaildb().get_all_group_company_1(group_id)
     emails_address = []
     email_saleman =[]
@@ -194,6 +196,26 @@ def send_email_json():
                 result_saleman = Email().send_file_email([email_saleman_address], email_title, str(email_saleman_message),
                                                          [upload_path], str(file_name))
                 result_salemans.append(result_saleman)
+        CC_member = test_user_manager().get_user_email()
+        email_list =[]
+        for z, k, v in CC_member:
+            if v in CC_email:
+                email_list.append(k)
+        company_infor = Emaildb().get_all_group_company_1(group_id)
+        email_company = "邮件通知已发送给以下客户:\n" + "{:<10}{:<20}{:<20}{:<20}{:<20}\n".format('index', 'company', 'department',
+                                                                                      'name', 'email') + (
+                                '-' * 100) + "\n"
+        for j in range(len(company_infor)):
+            email_address = company_infor[j].get("company_email")
+            email_company += "{:<10}{:<20}{:<20}{:<20}{:<20}".format(str(j), company_infor[j].get("company_name"),
+                                                                         company_infor[j].get("company_department"),
+                                                                         company_infor[j].get("company_linkman"),
+                                                                         email_address) + "\n"
+            email_saleman_message = email_company + "\n邮件内容:\n" + email_message1
+        result_saleman = Email().send_file_email(email_list, email_title, str(email_saleman_message),
+                                                 [upload_path], str(file_name))
+
+
     else:
         result = Email().send_email(emails_address,email_message1,email_title)
         for i in email_saleman:
@@ -258,9 +280,29 @@ def send_email_json():
                 email_saleman_address = email_saleman_address[0][1]
                 result_saleman = Email().send_email([email_saleman_address], str(email_saleman_message), email_title)
                 result_salemans.append(result_saleman)
+        CC_member = test_user_manager().get_user_email()
+        email_list = []
+        for z, k, v in CC_member:
+            if k in CC_email:
+                email_list.append(v)
+
+        company_infor = Emaildb().get_all_group_company_1(group_id)
+        email_company = "邮件通知已发送给以下客户:\n" + "{:<10}{:<20}{:<20}{:<20}{:<20}\n".format('index', 'company', 'department',
+                                                                                      'name', 'email') + (
+                                '-' * 100) + "\n"
+        for j in range(len(company_infor)):
+            email_address = company_infor[j].get("company_email")
+            email_company += "{:<10}{:<20}{:<20}{:<20}{:<20}".format(str(j), company_infor[j].get("company_name"),
+                                                                     company_infor[j].get("company_department"),
+                                                                     company_infor[j].get("company_linkman"),
+                                                                     email_address) + "\n"
+        email_saleman_message = email_company + "\n邮件内容:\n" + email_message1
+        print(email_saleman_message)
+        result_saleman = Email().send_email(email_list, str(email_saleman_message), email_title)
+
     now_time = datetime.datetime.now()
-    print(result,result_salemans)
     if len(result)== 0 :
+
         Emaildb().add_email_record(user_name,group_id,now_time,sql_message,"成功")
         return jsonify({"code": 200, "msg": "发送成功"})
     else:
@@ -273,13 +315,17 @@ def send_email_json():
 @mod.route('/email_record',methods=['POST', 'GET'])
 @user.authorize
 def email_record():
-    return render_template('util/email_record.html')
+    user_list = session.get('user', None)
+    user_position = user_list[0]['position']
+    if user_position in configure_data['send_record']:
+        return render_template('util/email_record.html')
+    else:
+        return render_template('util/405.html')
 
 @mod.route('/email_record.json',methods=['POST', 'GET'])
 @user.authorize
 def email_record_json():
     email_records = Emaildb().get_email_record()
-    print()
     data1 = {'total': len(email_records), 'rows': email_records}
     data = jsonify(data1)
     return data

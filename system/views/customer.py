@@ -4,6 +4,8 @@ from system.db.customer_db import Customerdb
 from system.db.email import Emaildb
 from system.db.vender_db import Venderdb
 from system.db.user_db import test_user_manager
+from system.function.yaml_handle import ReadHandle
+import os
 
 
 
@@ -15,11 +17,20 @@ from system.views import user
 mod = Blueprint('customer', __name__, template_folder='templates')
 
 
+
+configure_file = os.path.abspath('.')
+
+configure_data = ReadHandle(f'{configure_file}/system/configure/authority_configure.yaml').yaml_files_read()
+
+
+
 @mod.route('/customer',methods=['POST', 'GET'])
 @user.authorize
 def customer():
+    user_list = session.get('user', None)
+    user_position = user_list[0]['position']
     group_name = Emaildb().get_all_group()
-    return render_template('util/customer.html',group_name=group_name)
+    return render_template('util/customer.html',group_name=group_name ,configure_data = configure_data,user_position=user_position)
 
 
 @mod.route('/customer.json', methods=['POST', 'GET'])
@@ -27,8 +38,6 @@ def customer():
 def customer_json():
     result = Customerdb().get_all_customer()
     customers_infor = []
-    user_data = test_user_manager().get_all_user()
-    vender_data = Venderdb().get_all_vender()
     for row in result:
         customer_infor = {}
         customer_infor["id"] = row[0]
@@ -37,30 +46,16 @@ def customer_json():
         customer_infor["configure"] = row[3]
         customer_infor["test_subject"] = row[4]
         customer_infor["product_type"] = row[5]
-        for i in user_data:
-            if str(i["id"]) ==str(row[6]):
-                customer_infor["saleman"] = i["username"]
-            elif str(i["id"]) == str(row[14]):
-                customer_infor["business_develop"] = i["username"]
-            elif str(i["id"]) == str(row[15]):
-                customer_infor["project_manager"] = i["username"]
-
-        customer_infor["saleman"] = test_user_manager().get_user_id(row[6])
-
-        if len(customer_infor["saleman"]) ==0:
-            customer_infor["saleman"] =None
-        else:
-            customer_infor["saleman"] =customer_infor["saleman"][0][0]
+        customer_infor["saleman"] = row[6]
         customer_infor["chief_task"] = row[7]
         customer_infor["provide_js"] = row[8]
         customer_infor["linkman_name"] = row[9]
         customer_infor["department"] = row[10]
         customer_infor["position1"] = row[11]
         customer_infor["email"] = row[12]
-        for i in vender_data:
-            if i["id"] == row[13]:
-                customer_infor["vender"] = i["vender_name"]
-
+        customer_infor["vender"] = row[13]
+        customer_infor["business_develop"] = row[14]
+        customer_infor["project_manager"] = row[15]
         customers_infor.append(customer_infor)
     if request.method == 'GET':
         info = request.values
@@ -174,19 +169,15 @@ def add_into_group():
     if customer_id ==None or customer_id =="":
         return jsonify({"code": 500, "msg": "请选择需要添加的客户"})
     else:
+        result_1 = Emaildb().check_group_company(customer_id,group_id)
         result = Customerdb().get_customer(customer_id)
-        company_name = result[0][1]
-        companu_department = result[0][10]
-        company_linkman = result[0][9]
-        company_email = result[0][12]
-        saleman = result[0][6]
-        business_develop = result[0][14]
-        project_manager =result[0][15]
-        if company_email ==None or company_email=="":
+        print(result_1)
+        if result[0][12] ==None or result[0][12]=="":
             return jsonify({"code": 500, "msg": "该客户无法添加客户,原因:没有邮箱"})
+        elif len(result_1) != 0 :
+            return jsonify({"code": 500, "msg": "该客户已经在此分组里面"})
         else:
-            Emaildb().add_group_company(company_name, companu_department, company_linkman, company_email, saleman,
-                                        group_id,business_develop,project_manager)
+            Emaildb().add_group_company(customer_id, group_id)
             return jsonify({"code": 200, "msg": "添加成功"})
 
 

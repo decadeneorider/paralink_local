@@ -13,7 +13,7 @@ class Emaildb:
         return result
 
     def get_all_group_company(self,group_id):
-        sql = f"select t1.id,t1.company_name,t1.company_department,t1.company_linkman ,t1.company_email,t2.username,t3.username,t4.username from  group_company t1 inner join auto_auth_user t2 on t1.saleman = t2.id LEFT JOIN auto_auth_user t3 on t1.business_develop = t3.id LEFT JOIN auto_auth_user t4 on t1.project_manager = t4.id where t1.company_group = '{group_id}'"
+        sql = f"SELECT t1.id,t2.company_name,t2.department,t2.linkman_name ,t2.email,t3.username,t4.username,t5.username FROM `group_company` t1 left join  customer t2 on t1.customer_id=t2.id left join auto_auth_user t3 on t2.saleman = t3.id LEFT JOIN auto_auth_user t4 on t2.business_develop = t4.id LEFT JOIN auto_auth_user t5 on t2.project_manager = t5.id where t1.company_group = '{group_id}'"
         print(group_id)
         group_company_infors=[]
         result = MysqlDB().search(sql)
@@ -32,7 +32,7 @@ class Emaildb:
         return group_company_infors
 
     def get_all_group_company_1(self,group_id):
-        sql = f'SELECT * FROM group_company where company_group ="{group_id}" '
+        sql = f'SELECT t1.id,t2.company_name,t2.department,t2.linkman_name ,t2.email,t2.saleman,t2.business_develop,t2.project_manager FROM `group_company` t1 left join  customer t2 on t1.customer_id=t2.id  where company_group ="{group_id}" '
         group_company_infors=[]
         result = MysqlDB().search(sql)
         for i in range(len(result)):
@@ -43,15 +43,19 @@ class Emaildb:
             group_company_infor["company_linkman"] = result[i][3]
             group_company_infor["company_email"] = result[i][4]
             group_company_infor["company_saleman"] = result[i][5]
-            group_company_infor["business_develop"] = result[i][7]
-            group_company_infor["project_manager"] = result[i][8]
-
+            group_company_infor["business_develop"] = result[i][6]
+            group_company_infor["project_manager"] = result[i][7]
             group_company_infors.append(group_company_infor)
         return group_company_infors
 
-    def add_group_company(self,company_name,companu_department,company_linkman,company_email,saleman,company_group,business_develop,project_manager):
-        sql = f'insert into group_company(company_name,company_department,company_linkman,company_email,saleman,company_group,business_develop,project_manager)value ("{company_name}","{companu_department}","{company_linkman}","{company_email}","{saleman}","{company_group}","{business_develop}","{project_manager}")'
+    def add_group_company(self,customer_id,company_group):
+        sql = f'insert into group_company(customer_id,company_group)value ("{customer_id}","{company_group}")'
         MysqlDB().operation(sql)
+
+    def check_group_company(self, customer_id,company_group):
+        sql = f'SELECT * from group_company where customer_id ="{customer_id}" and company_group ="{company_group}"'
+        result = MysqlDB().search(sql)
+        return result
 
     def del_group_company(self,company_id):
         sql = f"DELETE  from group_company where id ='{company_id}' "

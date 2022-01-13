@@ -113,39 +113,6 @@ $(document).ready(function () {
     })
 });
 
-function addGroupCompany() {
-      $.ajax(
-        {
-            url: "/group_add_company.json",
-            data: {
-                "company_name": $('#company_name').val(),
-                "company_group_id":$('#company_group option:selected').val(),
-                "company_email":$("#company_email").val(),
-                "company_department":$('#company_department').val(),
-                "company_saleman":$('#saleman option:selected').val()
-            },
-            type: "post",
-            dataType: 'json',
-            success: function (data) {
-                if (data.code === 200) {
-                    zlalert.alertSuccessToast(data['msg']);
-                    setTimeout(function () {
-                        window.location.reload();
-                    }, 1000);
-
-
-                } else {
-                    zlalert.alertInfoToast(data['msg']);
-                }
-            },
-            error: function () {
-                alert('请求出错');
-            },
-
-        });
-  　　
-
-}
 
 function deleteGroupCompany() {
     "use strict";
@@ -203,8 +170,10 @@ function uploadFile() {
         var  fileObj = document.getElementById("FileUpload").files[0];
         var group_id = $('#group option:selected').val();
         var file_name = null;
+         document.getElementById("over").style.display = "block";
+         document.getElementById("layout").style.display = "block";
         if (typeof (fileObj) == "undefined" || fileObj.size <= 0) {
-            sendEmail(group_id,messagetxt,sql_message,file_name)
+            sendEmail(group_id,messagetxt,sql_message,file_name);
         }else{
             formData.append("file", fileObj); //加入文件对象
             $.ajax(
@@ -224,9 +193,7 @@ function uploadFile() {
                 error: function () {
                     alert('请求出错');
                 },
-                 complete: function () {
-                    $("#submitButton").removeAttr("disabled");
-                }
+
 
             });
         }
@@ -235,6 +202,7 @@ function uploadFile() {
 
 
 function sendEmail(company_group_id,messagetxt,sql_message,file_name) {
+    var select_values = $(".inputWrap ul li span").text();
     var email_title =$("#email_title").val();
     $.ajax(
         {
@@ -244,27 +212,34 @@ function sendEmail(company_group_id,messagetxt,sql_message,file_name) {
                 "message":messagetxt,
                 "sql_message":sql_message ,
                 "file_name": file_name,
-                "email_title":email_title
+                "email_title":email_title,
+                "CC_email":select_values
             },
             type: "post",
             dataType: 'json',
-             beforeSend: function () {
-                $("#submitButton").attr({disabled: "disabled"});
-            },
+
             success: function (data) {
                 if (data.code === 200) {
+                    document.getElementById("over").style.display = "none";
+                    document.getElementById("layout").style.display = "none";
                     zlalert.alertSuccessToast(data['msg']);
+                     setTimeout(function () {
+                        window.location.href = ('/email_company_edit');
+                    }, 1000);
+
                 } else {
+                     document.getElementById("over").style.display = "none";
+                    document.getElementById("layout").style.display = "none";
                     zlalert.alertInfoToast(data['msg']);
                     $("#msg").val(data['tips']);
                 }
             },
             error: function () {
+                 document.getElementById("over").style.display = "none";
+                 document.getElementById("layout").style.display = "none";
                 alert('请求出错');
             },
-             complete: function () {
-                $("#submitButton").removeAttr("disabled");
-            }
+
 
          });
 }

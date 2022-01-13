@@ -21,6 +21,8 @@ from system.views import vender
 from system.views import test
 from system.views import company_group
 from system.views import tips_email_record
+from system.views import license
+
 app.register_blueprint(user.mod)
 app.register_blueprint(contract.mod)
 app.register_blueprint(customer.mod)
@@ -28,4 +30,6 @@ app.register_blueprint(vender.mod)
 app.register_blueprint(test.mod)
 app.register_blueprint(company_group.mod)
 app.register_blueprint(tips_email_record.mod)
+app.register_blueprint(license.mod)
+
 

@@ -1,10 +1,17 @@
 from flask import render_template, jsonify, request, session, Blueprint, g
 from system.db.user_db import test_user_manager
 from functools import wraps
+from system.function.yaml_handle import ReadHandle
+import os
 
 
 
 mod = Blueprint('user', __name__, template_folder='templates')
+
+
+configure_file = os.path.abspath('.')
+
+configure_data = ReadHandle(f'{configure_file}/system/configure/authority_configure.yaml').yaml_files_read()
 
 # 设置登录认证
 def authorize(fn):
@@ -50,7 +57,9 @@ def checklogin():
 @mod.route('/user',methods=['POST', 'GET'])
 @authorize
 def user():
-    return render_template('util/user.html')
+    user_list = session.get('user', None)
+    user_position = user_list[0]['position']
+    return render_template('util/user.html',configure_data = configure_data,user_position=user_position)
 
 
 @mod.route('/user.json', methods=['POST', 'GET'])

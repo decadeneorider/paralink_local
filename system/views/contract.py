@@ -2,17 +2,27 @@ from flask import render_template, jsonify, request, session, Blueprint, g
 from system.db.contract_db import Contractdb
 from system.views import user
 from system.db.user_db import test_user_manager
-
+from system.function.yaml_handle import ReadHandle
+import os
+from system.function.execl_made import ExeclOperation
+from flask import send_file, send_from_directory
 
 
 mod = Blueprint('contract', __name__, template_folder='templates')
 
 global_contract_id =""
 
+
+configure_file = os.path.abspath('.')
+
+configure_data = ReadHandle(f'{configure_file}/system/configure/authority_configure.yaml').yaml_files_read()
+
 @mod.route('/contract_display')
 @user.authorize
 def contract_display():
-    return render_template('util/contract_display.html')
+    user_list = session.get('user', None)
+    user_position = user_list[0]['position']
+    return render_template('util/contract_display.html',configure_data = configure_data,user_position = user_position)
 
 @mod.route('/contract.json', methods=['POST', 'GET'])
 @user.authorize
@@ -181,10 +191,9 @@ def contract_detail():
     return render_template('util/contract_detail.html',data=data)
 
 
-
-
-
-
-
-
+@mod.route('/contract_download',methods=['POST', 'GET'])
+@user.authorize
+def contract_down_load():
+    name,upload_path= ExeclOperation().made_all_contract()
+    return send_file(upload_path)
 

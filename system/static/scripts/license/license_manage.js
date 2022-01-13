@@ -9,8 +9,8 @@ var TableInit = function () {
     var oTableInit = new Object();
     //初始化Table
     oTableInit.Init = function () {
-        $('#tb_tips_contract').bootstrapTable({
-            url: '/tips_record_display.json',         //请求后台的URL（*）
+        $('#tb_license').bootstrapTable({
+            url: '/license_manage.json',         //请求后台的URL（*）
             toolbar: '#toolbar',                //工具按钮用哪个容器
             striped: true,                      //是否显示行间隔色
             cache: false,                       //是否使用缓存，默认为true（*）
@@ -36,23 +36,23 @@ var TableInit = function () {
             singleSelect: true,                   //是否开启单选
             columns: [{
                 checkbox: true
-            }, {
-                field: 'contract_id',
-                title: '合同编号',
-            }, {
-                field: 'customer',
+            },{
+                field: 'id',
+                title: 'id',
+                visible: false
+            },{
+                field: 'customer_name',
                 title: '客户名'
             },{
-                field: 'saleman',
-                title: '销售人员'
-            }
-            ,  {
-                field: 'due_date',
-                title: '维保到期日'
+                field: 'customer_department',
+                title: '客户部门'
             },{
-                field: 'tips_number',
-                title: '邮件提醒次数'
-            }
+                field: 'customer_linkman',
+                title: '联系人'
+            },{
+                field: 'kit_type',
+                title: '套件类别'
+            },
             ]
         });
     };
@@ -68,50 +68,38 @@ var TableInit = function () {
 };
 
 
+function uploadFile() {
+        var formData = new FormData();
+        var  fileObj = document.getElementById("FileUpload").files[0];
+        var file_name = null;
+        if (typeof (fileObj) == "undefined" || fileObj.size <= 0) {
+        }else{
+            formData.append("file", fileObj); //加入文件对象
+            $.ajax(
+            {
+                url: "/upload_license_file",
+                data: formData,
+                type: "Post",
+                dataType: "json",
+                cache: false,//上传文件无需缓存
+                processData: false,//用于对data参数进行序列化处理 这里必须false
+                contentType: false, //必须
+                success: function (data) {
+                     var user = data.msg;
+                     $('#url').val(user);
+                },
 
-function update_remind() {
-    "use strict";
+                error: function () {
+                    alert('请求出错');
+                },
 
-    cocoMessage.config({
-        duration: 10000,
-    });
 
-    var rows = $('#tb_tips_contract').bootstrapTable('getSelections');
-    if (rows) {
-        var row = rows[0];
-        var contract_id ;
-        try{
-            contract_id = row.contract_id;
+            });
         }
-        catch(e)
-        {
-            contract_id = 0;
-        }
-    }
-    $.ajax(
-        {
-            url: "/tips_update",
-            data: {"id": contract_id},
-            type: "post",
-            dataType: 'json',
-            beforeSend: function () {
-                $("#tip").html("<span style='color:blue'>正在处理...</span>");
-            },
-            success: function (data) {
-                if (data.code === 200) {
-                    cocoMessage.info("修改成功！", 1000);
-                    setTimeout(function () {
-                        window.location.href = ('/tips_record_display');
-                    }, 1500);
-                } else {
-                   cocoMessage.error(data['msg'], 1000);
-                }
-            },
-            error: function () {
-                alert('请求出错');
-            },
-            complete: function () {
-                $("#btn_delete").removeAttr("disabled");
-            }
-        });
+
+}
+
+
+function create_license_manage() {
+    
 }

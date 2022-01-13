@@ -11,20 +11,27 @@ import os
 class Email:
     def send_email(self,receivers,message1,email_title):
         results = []
+        print(receivers)
+        print(receivers)
         for receiver in receivers:
-            sender = 'maintenance@paralink.com.cn'
+            sender = 'service@paralink.com.cn'
             print(message1)
             # 三个参数：第一个为文本内容，第二个 plain 设置文本格式，第三个 utf-8 设置编码
             message = MIMEText(message1, 'plain', 'utf-8')
-            message["From"] = "maintenance@paralink.com.cn"
+            message["From"] = "service@paralink.com.cn"
             message['To'] = receiver  # 接收者
 
             subject = email_title
             message['Subject'] = Header(subject, 'utf-8')
 
             mail_host = "smtp.paralink.com.cn"
-            mail_sender = "maintenance@paralink.com.cn"
-            mail_license = "JQU2L0M__p"
+            mail_sender = "service@paralink.com.cn"
+            mail_license = "1_B5kCU22jk4"
+            # stp = smtplib.SMTP()
+            # stp.connect(mail_host, 25)
+            # stp.login(mail_sender, mail_license)
+            # stp.login(mail_sender, mail_license)
+            # stp.sendmail(sender, receiver, message.as_string())
             try:
                 # 创建SMTP对象
                 stp = smtplib.SMTP()
@@ -33,6 +40,7 @@ class Email:
                 stp.login(mail_sender, mail_license)
                 stp.sendmail(sender, receiver, message.as_string())
             except smtplib.SMTPException:
+                print("发送失败")
                 results.append(receiver)
         return results
 

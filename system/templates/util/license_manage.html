@@ -1,0 +1,23 @@
+{% extends "dn_base.html" %}
+{% block title %}license管理{% endblock %}
+{% block head %}
+<meta name="viewport" content="width=device-width"/>
+<script src="../../static/scripts/license/license_manage.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="panel-body">
+    <div id="toolbar" class="btn-group">
+        <button id="addButton" class="btn btn-default" data-toggle="modal" data-target="#add-dialog">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp 新增license管理
+        </button>
+
+
+        <button id="btn_delete" type="button" class="btn btn-default" onclick="deleteVender()">
+            <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>&nbsp license生成
+        </button>
+
+    </div>
+    <table id="tb_license"></table>
+</div>
+{% endblock %}

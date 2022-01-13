@@ -5,13 +5,14 @@ from system.db.sqldb import MysqlDB
 class test_user_manager:
     def check_login(self, username, password, db_type_num):
         """验证账号登陆"""
-        sql = f"select id, username from auto_auth_user where username = '{username}' and password = '{password}'"
+        sql = f"select id, username,position1 from auto_auth_user where username = '{username}' and password = '{password}'"
         search_list = MysqlDB().search(sql)
         results = []
         for i in range(len(search_list)):
             result = {}
             result['id'] = search_list[i][0]
             result['username'] = search_list[i][1]
+            result['position'] =  search_list[i][2]
             results.append(result)
         return results
 
@@ -32,8 +33,10 @@ class test_user_manager:
             user_infors.append(user_infor)
         return user_infors
 
+
+
     def get_all_user_id(self):
-        sql = 'SELECT id,username FROM auto_auth_user'
+        sql = 'SELECT username,email FROM auto_auth_user'
         result = MysqlDB().search(sql)
         return result
 
@@ -52,6 +55,11 @@ class test_user_manager:
 
     def get_user_position_email(self,position1):
          sql = f'SELECT id,username,email FROM auto_auth_user where position1 ="{position1}" '
+         result = MysqlDB().search(sql)
+         return result
+
+    def get_user_email(self):
+         sql = 'SELECT id,username,email FROM auto_auth_user'
          result = MysqlDB().search(sql)
          return result
 

@@ -11,12 +11,16 @@
 <div class="panel-body">
     <h1>{{ self.title() }}</h1>
     <div id="toolbar" class="btn-group">
+         {% if user_position in configure_data.user.add%}
         <button id="addButton" class="btn btn-default" data-toggle="modal" data-target="#add-dialog">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp新增
         </button>
+        {% endif %}
+        {% if user_position in configure_data.user.delete%}
         <button id="btn_delete" type="button" class="btn btn-default" onclick="delUser()">
             <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>&nbsp删除
         </button>
+        {% endif %}
     </div>
     <table id="tb_user"></table>
 </div>

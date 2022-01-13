@@ -4,7 +4,8 @@ from system.db.sqldb import MysqlDB
 class Customerdb:
     # 查询客户
     def get_all_customer(self):
-        sql = 'SELECT * FROM customer'
+        sql = "select t1.id,t1.company_name,t1.location,t1.configure,t1.test_subject,t1.product_type,t2.username,t1.chief_task,t1.provide_js,t1.linkman_name,t1.department,t1.position1,t1.email,t3.vender_name,t4.username,t5.username from customer t1 left join auto_auth_user t2 on t1.saleman = t2.id left join  vender t3 on t1.vendor = t3.id left join  auto_auth_user t4 on t1.business_develop = t4.id left join  auto_auth_user t5 on t1.project_manager = t4.id"
+
         result =MysqlDB().search(sql)
 
         return result

@@ -35,6 +35,6 @@ def tips_record_display_json():
 @mod.route('/tips_update',methods=['POST', 'GET'])
 @user.authorize
 def tips_update():
-    contract_id = request.values.get("contract_id")
+    contract_id = request.values.get("id")
     Contractdb().remind_need_update(contract_id)
     return jsonify({"code": 200,})

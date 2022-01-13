@@ -1,14 +1,23 @@
 from flask import render_template, jsonify, request, session, Blueprint, g
 from system.db.vender_db import Venderdb
 from system.views import user
-
+from system.function.yaml_handle import ReadHandle
+import os
 
 mod = Blueprint('vender', __name__, template_folder='templates')
+
+
+configure_file = os.path.abspath('.')
+
+configure_data = ReadHandle(f'{configure_file}/system/configure/authority_configure.yaml').yaml_files_read()
+
 
 @mod.route('/vender',methods=['POST', 'GET'])
 @user.authorize
 def vender():
-    return render_template('util/vender.html')
+    user_list = session.get('user', None)
+    user_position = user_list[0]['position']
+    return render_template('util/vender.html',configure_data =configure_data,user_position = user_position)
 
 
 @mod.route('/vender.json', methods=['POST', 'GET'])

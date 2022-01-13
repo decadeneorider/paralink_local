@@ -239,15 +239,13 @@ class Contractdb:
         if result[0][9] == None:
             contract_infor['acceptment_date'] = result[0][9]
         else:
-            contract_infor['acceptment_date'] = result[0][9].strftime('%Y-%m-%d')
+            contract_infor['acceptm ent_date'] = result[0][9].strftime('%Y-%m-%d')
         contract_infor['due_date'] = result[0][10].strftime('%Y-%m-%d')
         if result[0][11] == 0:
             contract_infor['remind_need'] = "是"
         else:
             contract_infor['remind_need'] = "否"
         contract_infor['remark'] = result[0][12]
-
-
         return contract_infor
 
     def contract_motify_updtae(self, contract_id, customer, vender, saleman,configure,receipt_date, order_date,shipmemt_date,arrival_date,acceptment_date,due_date,remind_need,remark):
@@ -283,7 +281,8 @@ class Contractdb:
         return result
 
     def remind_need_update(self,contract_id):
-        sql= f'UPDATE contract_infor SET remind = 1 where contract_id = {contract_id}'
+        sql= f'UPDATE contract_infor SET remind_need = 1 where contract_id = "{contract_id}"'
+        print(sql)
         MysqlDB().operation(sql)
 
 
@@ -308,7 +307,7 @@ class Tipsdb:
         return result
 
     def tips_number_update(self,contract_id,tips_number):
-        sql = f'UPDATE tips_email_record SET tips_number={tips_number} where contract_id = {contract_id}'
+        sql = f'UPDATE tips_email_record SET tips_number={tips_number} where contract_id = "{contract_id}"'
         MysqlDB().operation(sql)
 
 
